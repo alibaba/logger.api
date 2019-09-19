@@ -255,6 +255,7 @@ public class Logback918ActivateOption extends AbstractActiveOption {
         while (iterator.hasNext()) {
             logger.detachAppender(iterator.next());
         }
+        asynAppender.setNeverBlock(true);
 
         logger.addAppender(asynAppender);
 
