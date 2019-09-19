@@ -237,6 +237,7 @@ public class Logback918ActivateOption extends AbstractActiveOption {
 
         asynAppender.setName(productName + "." + logger.getName() + ".AsyncAppender");
         asynAppender.setContext(LogbackLoggerContextUtil.getLoggerContext());
+        asynAppender.setNeverBlock(true);
 
         Iterator<Appender<ILoggingEvent>> iterator = logger.iteratorForAppenders();
         boolean hasAppender = false;
@@ -255,7 +256,6 @@ public class Logback918ActivateOption extends AbstractActiveOption {
         while (iterator.hasNext()) {
             logger.detachAppender(iterator.next());
         }
-        asynAppender.setNeverBlock(true);
 
         logger.addAppender(asynAppender);
 
