@@ -169,6 +169,7 @@ public class Log4jActivateOption extends AbstractActiveOption {
     @Override
     public void activateAsync(List<Object[]> args) {
         AsyncAppender asyncAppender = new AsyncAppender();
+        asyncAppender.setBlocking(false);
 
         invokeMethod(asyncAppender, args);
 

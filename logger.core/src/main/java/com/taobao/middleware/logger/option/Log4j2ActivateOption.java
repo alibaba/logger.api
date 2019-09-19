@@ -187,6 +187,7 @@ public class Log4j2ActivateOption extends AbstractActiveOption {
                                                      .setName(productName + "." + logger.getName() + ".AsyncAppender")
                                                      .setConfiguration(configuration)
                                                      .setAppenderRefs(refs)
+                                                     .setBlocking(false)
                                                      .setBlockingQueueFactory(ArrayBlockingQueueFactory.<LogEvent>createFactory());
 
         invokeMethod(builder, args);
