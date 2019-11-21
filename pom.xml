@@ -35,7 +35,7 @@
 
     <groupId>com.taobao.middleware</groupId>
     <artifactId>logger.parent</artifactId>
-    <version>0.2.8-SNAPSHOT</version>
+    <version>0.2.8</version>
     <name>Taobao Middleware Logger</name>
     <packaging>pom</packaging>
 
