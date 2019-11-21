@@ -6,6 +6,7 @@ import ch.qos.logback.core.FileAppender;
 import com.taobao.middleware.logger.Logger;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -25,6 +26,11 @@ public abstract class LoggerHelper {
     private static Map<String, String>  Product_Logger_Pattern;
 
     private static Map<String, ResourceBundle> Product_Resource_Bundle;
+
+    /**
+     * value可能是 null
+     */
+    private volatile static Map<String, String> customUrlMap = new HashMap<String, String>();
 
     static {
         String dpath = System.getProperty("JM.LOG.PATH");
@@ -171,7 +177,21 @@ public abstract class LoggerHelper {
     public static String getErrorCodeStr(String productName, String errorCode, String errorType, String message) {
         String moreUrl = DEFAULT_MORE_URL;
         if (productName != null) {
-            String customUrl = System.getProperty(productName.toUpperCase() + MORE_URL_POSFIX);
+            String urlKey = productName.toUpperCase() + MORE_URL_POSFIX;
+            String customUrl = null;
+
+            // customUrlMap是volatile对象，防止多线程问题，因此使用临时变量存放
+            Map<String, String> localCustomUrlMap = customUrlMap;
+            if (localCustomUrlMap.containsKey(urlKey)) {
+                customUrl = localCustomUrlMap.get(urlKey);
+            } else {
+                // 为了避免 customUrl是 null时，也会调用 System.getProperty(urlKey)，所以 customUrlMap会存null值
+                customUrl = System.getProperty(urlKey);
+                Map<String, String> copyMap = new HashMap<String, String>();
+                copyMap.putAll(customUrlMap);
+                copyMap.put(urlKey, customUrl);
+                customUrlMap = copyMap;
+            }
 
             if (customUrl != null) {
                 moreUrl = customUrl;
